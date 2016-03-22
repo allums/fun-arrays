@@ -1,11 +1,14 @@
-var dataset = require('./dataset.json');
+var dataset = require('./dataset.json').bankBalances;
 
 /*
   create an array with accounts from bankBalances that are
   greater than 100000.00
   assign the resulting array to `hundredThousandairs`
 */
-var hundredThousandairs = null;
+
+var hundredThousandairs = dataset.filter(function(balance) {
+    return parseFloat(balance.amount) > 100000.00;
+});
 
 /*
   set a new key for each object in bankBalances named `rounded`
@@ -18,7 +21,11 @@ var hundredThousandairs = null;
     }
   assign the resulting array to `roundedDollar`
 */
-var roundedDollar = null;
+var roundedDollar = dataset.map(function(balance) {
+    balance.rounded  = Math.round(balance.amount);
+    console.log(balance.rounded);
+    return balance;
+});
 
 /*
   set a the `amount` value for each object in bankBalances
@@ -30,11 +37,24 @@ var roundedDollar = null;
     }
   assign the resulting array to `roundedDime`
 */
-var roundedDime = null;
+var roundedDime = dataset.map(function(current){
+    current.amount = Math.round(current.amount * 10)/10; 
+    console.log(current.amount);
+    return {
+      amount: current.amount,
+      state: current.state
+
+    };
+});
+console.log(roundedDime);
+
 
 // set sumOfBankBalances to the sum of all amounts in bankBalances
-var sumOfBankBalances = null;
-
+var sumOfBankBalances = dataset.reduce(function(prev, balance, idx){
+      return prev + parseFloat(balance.amount);
+     
+}, 0);
+sumOfBankBalances = Math.round(sumOfBankBalances * 100)/100;
 /*
   set sumOfInterests to the sum of the 18.9% interest
   for all amounts in bankBalances
@@ -121,15 +141,15 @@ var anyStatesInHigherStateSum = null;
 
 
 module.exports = {
-  hundredThousandairs : hundredThousandairs,
-  roundedDollar : roundedDollar,
-  roundedDime : roundedDime,
-  sumOfBankBalances : sumOfBankBalances,
-  sumOfInterests : sumOfInterests,
-  sumOfHighInterests : sumOfHighInterests,
-  stateSums : stateSums,
-  lowerSumStates : lowerSumStates,
-  higherStateSums : higherStateSums,
-  areStatesInHigherStateSum : areStatesInHigherStateSum,
-  anyStatesInHigherStateSum : anyStatesInHigherStateSum
+    hundredThousandairs: hundredThousandairs,
+    roundedDollar: roundedDollar,
+    roundedDime: roundedDime,
+    sumOfBankBalances: sumOfBankBalances,
+    sumOfInterests: sumOfInterests,
+    sumOfHighInterests: sumOfHighInterests,
+    stateSums: stateSums,
+    lowerSumStates: lowerSumStates,
+    higherStateSums: higherStateSums,
+    areStatesInHigherStateSum: areStatesInHigherStateSum,
+    anyStatesInHigherStateSum: anyStatesInHigherStateSum
 };
